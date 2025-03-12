@@ -15,9 +15,11 @@ const CreateSport = () => {
     payment: "no",
     description: "",
     sex: "",
-    gender: "",
-    ageRange: "",
-
+    gender: [],
+    ageRange: {
+      edadMin: 0,
+      edadMax: 0
+    },
   });
 
   const handleChange = (e) => {
@@ -34,7 +36,24 @@ const CreateSport = () => {
   }
 
   const handleAgeRangeChange = ({ edadMin, edadMax }) => {
-    setFormData({ ...formData, edadMin, edadMax });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ageRange: [{ edadMin, edadMax }]
+    }));
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+
+    setFormData((prevFormData) => {
+      if (checked) {
+        // Agregar el valor si está marcado
+        return { ...prevFormData, gender: [...prevFormData.gender, value] };
+      } else {
+        // Remover el valor si está desmarcado
+        return { ...prevFormData, gender: prevFormData.gender.filter((g) => g !== value) };
+      }
+    });
   };
 
   return (
@@ -175,64 +194,68 @@ const CreateSport = () => {
               className="form-check-input"
               type="checkbox"
               id="GeneroCheckbox1"
-              value="option1"
+              value="Hombre"
+              onChange={handleCheckboxChange}
             />
-            <label className="form-check-label" htmlFor="inlineCheckbox1">
-              Hombre
-            </label>
+            <label className="form-check-label" htmlFor="GeneroCheckbox1">Hombre</label>
           </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="GeneroCheckbox2"
-              value="option2"
-            />
-            <label className="form-check-label" htmlFor="inlineCheckbox2">
-              Mujer
-            </label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="GeneroCheckbox3"
-              value="option3"
-            />
-            <label className="form-check-label" htmlFor="inlineCheckbox2">
-              No Binario
-            </label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="GeneroCheckbox4"
-              value="option4"
-            />
-            <label className="form-check-label" htmlFor="inlineCheckbox2">
-              Otro
-            </label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="GeneroCheckbox5"
-              value="option5"
-            />
-            <label className="form-check-label" htmlFor="inlineCheckbox2">
-              No importa
-            </label>
-          </div>
-          <h3 className="text-center mt-4">Sexo</h3>
 
           <div className="form-check form-check-inline">
             <input
               className="form-check-input"
               type="checkbox"
+              id="GeneroCheckbox2"
+              value="Mujer"
+              onChange={handleCheckboxChange}
+            />
+            <label className="form-check-label" htmlFor="GeneroCheckbox2">Mujer</label>
+          </div>
+
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="GeneroCheckbox3"
+              value="No Binario"
+              onChange={handleCheckboxChange}
+            />
+            <label className="form-check-label" htmlFor="GeneroCheckbox3">No Binario</label>
+          </div>
+
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="GeneroCheckbox4"
+              value="Otro"
+              onChange={handleCheckboxChange}
+            />
+            <label className="form-check-label" htmlFor="GeneroCheckbox4">Otro</label>
+          </div>
+
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="GeneroCheckbox5"
+              value="No importa"
+              onChange={handleCheckboxChange}
+            />
+            <label className="form-check-label" htmlFor="GeneroCheckbox5">No importa</label>
+          </div>
+
+
+          <h3 className="text-center mt-4">Sexo</h3>
+
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
               id="SexoCheckbox1"
-              value="option1"
+              name="sex"
+              value="Masculino"
+              checked={formData.sex === "Masculino"}
+              onChange={handleChange}
             />
             <label className="form-check-label" htmlFor="inlineCheckbox1">
               Masculino
@@ -241,9 +264,12 @@ const CreateSport = () => {
           <div className="form-check form-check-inline">
             <input
               className="form-check-input"
-              type="checkbox"
+              type="radio"
               id="SexoCheckbox2"
-              value="option2"
+              name="sex"
+              value="Femenino"
+              checked={formData.sex === "Femenino"}
+              onChange={handleChange}
             />
             <label className="form-check-label" htmlFor="inlineCheckbox2">
               Femenino
@@ -252,16 +278,19 @@ const CreateSport = () => {
           <div className="form-check form-check-inline">
             <input
               className="form-check-input"
-              type="checkbox"
+              type="radio"
               id="SexoCheckbox3"
-              value="option3"
+              name="sex"
+              value="Mixto"
+              checked={formData.sex === "Mixto"}
+              onChange={handleChange}
             />
             <label className="form-check-label" htmlFor="inlineCheckbox2">
               Mixto
             </label>
           </div>
-          <h3 className="text-center mt-4">Rango de edad</h3>
 
+          <h3 className="text-center mt-4">Rango de edad</h3>
           <label htmlFor="customRange1" className="form-label"></label>
           <AgeRange onChange={handleAgeRangeChange} />
         </div>
